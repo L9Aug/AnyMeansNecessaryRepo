@@ -29,13 +29,15 @@ public class UIElements : MonoBehaviour {
     // Use this for initialization
     void Start () {
         ammoCount.text = ammo.ToString() + "/30";
-	}
+        requiredXpForLevel = 25 * (Mathf.Pow(level, 2) + level + 2);
+        print(requiredXpForLevel);
+    }
 	
 	// Update is called once per frame
 	void Update () {
         //healthBar.value = health;
-        requiredXpForLevel = 25 * (Mathf.Pow(level, 2) + level + 2);
-        xpBar.value = (xp / requiredXpForLevel) * 100;
+       
+
 
 
 
@@ -64,9 +66,9 @@ public class UIElements : MonoBehaviour {
         */
 
         // if(objComplete == true) 
-      
 
-        if(Input.GetKeyDown(KeyCode.Y))
+
+        if (Input.GetKeyDown(KeyCode.Y))
         {
             swapWeapon = true;
             toggleweaponSprite(swapWeapon);
@@ -163,10 +165,11 @@ public class UIElements : MonoBehaviour {
     {
         //next level equation is 25n^2 + 25n + 50
         xp += gain;
-        
+        xpBar.value = (xp / requiredXpForLevel) * 100;
+
         if (xp >= requiredXpForLevel)
         {
-            level++;
+            levelUp();
             SkillTree.skillPoints++;
             SkillTree.updateSkillPoints();
             xp = (int)(xp % requiredXpForLevel);  //if we want pool to reset for each level
@@ -186,5 +189,13 @@ public class UIElements : MonoBehaviour {
     public void SomeValue(int value)
     {
         print(value);
+    }
+
+    public void levelUp()
+    {
+        level++;
+        requiredXpForLevel = 25 * (Mathf.Pow(level, 2) + level + 2);
+        print(requiredXpForLevel);
+        
     }
 }
