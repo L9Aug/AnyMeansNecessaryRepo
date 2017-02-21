@@ -4,18 +4,25 @@ using System.Collections;
 public class AIRemoveVisual : MonoBehaviour {
 
 
-    public GameObject AI;
+ GameObject AI;
+   
 	// Use this for initialization
 	void Start () {
-	
+        AI = transform.parent.gameObject;
+        
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
-        if(AI.GetComponent<Standard_Enemy>()._state == Base_Enemy.State.Dead)
+
+       if (AI.GetComponent<Standard_Enemy>()._state == Base_Enemy.State.Dead)
         {
             Destroy(gameObject);
         }
 	}
+
+    public static void removeMiniMapVisual()
+    {
+        
+    }
 }
