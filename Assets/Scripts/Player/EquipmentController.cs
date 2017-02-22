@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class EquipmentController : MonoBehaviour
 {
+    // the equiptment that is currently spawned in.
     [HideInInspector]
     public List<GameObject> EquipmentOptions = new List<GameObject>();
 
@@ -13,6 +14,9 @@ public class EquipmentController : MonoBehaviour
     // A list of items that represent the amount of ammo that the weapons have.
     [HideInInspector]
     public List<Items> Ammo = new List<Items>();
+
+    [HideInInspector]
+    public bool InfiniteAmmo = false;
 
     private int currentEquipment = 0;
     private Transform rightHand;
@@ -31,17 +35,9 @@ public class EquipmentController : MonoBehaviour
     {
         if (GetRightHand())
         {
-            List<Items> equipables = ItemDataBase.InventoryDataBase.itemList.FindAll(x => (x.itemType == Items.TypeofItem.Equipable || x.itemType == Items.TypeofItem.EquipAndConsume) && x.currentStack > 0);
-            if (Weapons != equipables)
-            {
-                Weapons = equipables;
-            }
+            Weapons = ItemDataBase.InventoryDataBase.itemList.FindAll(x => (x.itemType == Items.TypeofItem.Equipable || x.itemType == Items.TypeofItem.EquipAndConsume) && x.currentStack > 0);
 
-            List<Items> ammoItems = ItemDataBase.InventoryDataBase.itemList.FindAll(x => x.itemType == Items.TypeofItem.misc && x.itemName.Contains("Ammo"));
-            if (Ammo != ammoItems)
-            {
-                Ammo = ammoItems;
-            }
+            Ammo = ItemDataBase.InventoryDataBase.itemList.FindAll(x => x.itemType == Items.TypeofItem.misc && x.itemName.Contains("Ammo"));
 
             GameObject PlayerGun = null;
 
@@ -54,8 +50,7 @@ public class EquipmentController : MonoBehaviour
             }
 
             //Update Spawned Objects
-            //check for objects to be removed.
-            
+            //check for objects to be removed.            
             for(int i = 0; i < EquipmentOptions.Count; ++i)
             {
                 Items temp = Weapons.Find(x => x.itemName == EquipmentOptions[i].name);
@@ -81,27 +76,31 @@ public class EquipmentController : MonoBehaviour
                         temp.name = item.itemName;
                         AssignEquipment(temp);
                         EquipmentOptions.Add(temp);
-                        BaseGun bg = temp.GetComponent<BaseGun>();
-
-                        // Assign ammo to the equipment.
-                        if (item.itemType == Items.TypeofItem.EquipAndConsume)
-                        {
-                            bg.AmmoReserve = item.currentStack;
-                        }
-                        else
-                        {
-                            bg.AmmoReserve = Ammo.Find(x => x.itemName.Contains(item.itemName)).currentStack;
-                            if (PlayerController.PC.bleedDamage) bg.OnFireCallbacks.Add(PlayerController.PC.AddBleedDamage);
-                            if (PlayerController.PC.Stalker) bg.OnFireCallbacks.Add(PlayerController.PC.AddStalker);
-                            bg.MagazineSize = (int)(bg.BaseMagazineSize * PlayerController.PC.MagazineSizeMultiplyer);
-                            bg.Damage = (int)(bg.BaseDamage * PlayerController.PC.DamageMultiplyer);
-                        }
-
-                        bg.InfiniteAmmo = false;
-                        bg.reloadUpdate = WeaponStackUpdate;
-                        temp.SetActive(false);
                     }
                 }
+
+                if (temp != null)
+                {
+                    BaseGun bg = temp.GetComponent<BaseGun>();
+                    // Assign ammo to the equipment.
+                    if (item.itemType == Items.TypeofItem.EquipAndConsume)
+                    {
+                        bg.AmmoReserve = item.currentStack;
+                    }
+                    else
+                    {
+                        bg.AmmoReserve = Ammo.Find(x => x.itemName.Contains(item.itemName)).currentStack;
+                        if (PlayerController.PC.bleedDamage) bg.OnFireCallbacks.Add(PlayerController.PC.AddBleedDamage);
+                        if (PlayerController.PC.Stalker) bg.OnFireCallbacks.Add(PlayerController.PC.AddStalker);
+                        bg.MagazineSize = (int)(bg.BaseMagazineSize * PlayerController.PC.MagazineSizeMultiplyer);
+                        bg.Damage = (int)(bg.BaseDamage * PlayerController.PC.DamageMultiplyer);
+                    }
+
+                    bg.InfiniteAmmo = InfiniteAmmo;
+                    bg.reloadUpdate = WeaponStackUpdate;
+                    temp.SetActive(false);
+                }
+                
             }
 
             if (PlayerGun == null)
@@ -141,11 +140,6 @@ public class EquipmentController : MonoBehaviour
                 ItemDataBase.InventoryDataBase.itemList.Find(x => x.itemName == temp.itemName).currentStack = ammoReserve;
             }
         }
-    }
-
-    void SetEquipment(int index)
-    {
-
     }
 
     public void CycleEquipment()

@@ -276,59 +276,19 @@ namespace Condition
         bool Test();
     }
 
-    /// <summary>
-    /// Test Value between Min and Max values
-    /// </summary>
-    public class FloatCondition : ICondition
-    {
-        public float MinValue;
-        public float MaxValue;
-
-        public delegate float FloatParam();
-        public FloatParam TestValue;
-
-        bool ICondition.Test()
-        {
-            return (MinValue <= TestValue()) && (TestValue() <= MaxValue);
-        }
-    }
-
-    /// <summary>
-    /// A less than or equal to B
-    /// </summary>
-    public class LessThanFloatCondition : ICondition
-    {
-        public delegate float FloatParam();
-        public FloatParam A;
-        public FloatParam B;
-
-        bool ICondition.Test()
-        {
-            return A() <= B();
-        }
-    }
-
-    /// <summary>
-    /// A greater than or equal to B
-    /// </summary>
-    public class GreaterThanFloatCondition : ICondition
-    {
-        public delegate float FloatParam();
-        public FloatParam A;
-        public FloatParam B;
-
-        bool ICondition.Test()
-        {
-            return A() >= B();
-        }
-    }
-
     public class BoolCondition : ICondition
     {
-        public delegate bool BoolParam();
-        public BoolParam Condition;
+        public delegate bool BoolParameter();
+        public BoolParameter Condition;
 
-        bool ICondition.Test()
+        public BoolCondition() { }
+
+        public BoolCondition(BoolParameter condition)
+        {
+            Condition = condition;
+        }
+
+        public bool Test()
         {
             return Condition();
         }
@@ -336,23 +296,39 @@ namespace Condition
 
     public class AndCondition : ICondition
     {
-        public ICondition ConditionA;
-        public ICondition ConditionB;
+        public ICondition A;
+        public ICondition B;
 
-        bool ICondition.Test()
+        public AndCondition() { }
+
+        public AndCondition(ICondition a, ICondition b)
         {
-            return ConditionA.Test() && ConditionB.Test();
+            A = a;
+            B = b;
+        }
+
+        public bool Test()
+        {
+            return A.Test() && B.Test();
         }
     }
 
     public class OrCondition : ICondition
     {
-        public ICondition ConditionA;
-        public ICondition ConditionB;
+        public ICondition A;
+        public ICondition B;
 
-        bool ICondition.Test()
+        public OrCondition() { }
+
+        public OrCondition(ICondition a, ICondition b)
         {
-            return ConditionA.Test() || ConditionB.Test();
+            A = a;
+            B = b;
+        }
+
+        public bool Test()
+        {
+            return A.Test() || B.Test();
         }
     }
 
@@ -360,23 +336,16 @@ namespace Condition
     {
         public ICondition Condition;
 
-        bool ICondition.Test()
+        public NotCondition() { }
+
+        public NotCondition(ICondition condition)
+        {
+            Condition = condition;
+        }
+
+        public bool Test()
         {
             return !Condition.Test();
-        }
-    }
-
-    /// <summary>
-    /// True if null
-    /// </summary>
-    public class NullCondition : ICondition
-    {
-        public delegate object ObjectParam();
-        public ObjectParam Condition;
-
-        bool ICondition.Test()
-        {
-            return Condition() == null;
         }
     }
 }
