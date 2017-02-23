@@ -206,7 +206,7 @@ public class SkillsController : MonoBehaviour
 
     void AddSnapNeck()
     {
-
+        PlayerController.PC.SnapNeck = true;
     }
 
     /// <summary>
@@ -332,7 +332,7 @@ public class SkillsController : MonoBehaviour
     /// <param name="Amount">Amount as a percentage</param>
     void IncreaseKnockOutTime(float Amount)
     {
-
+        Base_Enemy.stunTimer *= (1 + (Amount / 100f));
     }
 
     /// <summary>
@@ -346,7 +346,7 @@ public class SkillsController : MonoBehaviour
 
     void AddGrabSpeed()
     {
-
+        PlayerController.PC.GrabSpeed = true;
     }
 
     /// <summary>
@@ -363,9 +363,11 @@ public class SkillsController : MonoBehaviour
         Distraction.objectDestroyInSeconds += Amount;
     }
 
-    void AddTranqUses(float Amount)
+    void AddTranqUses(int Amount)
     {
-
+        Items tranqAmmo = ItemDataBase.InventoryDataBase.itemList.Find(x => x.itemType == Items.TypeofItem.misc && x.itemName.Contains("TaserAmmo"));
+        tranqAmmo.currentStack = Mathf.Clamp(tranqAmmo.currentStack + Amount, 0, tranqAmmo.maxItemStack);
+        PlayerController.PC.GetComponent<EquipmentController>().UpdateEquipment();
     }
 
     public void AddAllSkills()

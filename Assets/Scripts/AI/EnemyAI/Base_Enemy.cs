@@ -13,7 +13,7 @@ public class Base_Enemy : MonoBehaviour
     public NavMeshAgent Agent;
     public static int killCount;
 
-    public float stunTimer;
+    public static float stunTimer;
     private bool Stunned;
     private float currentStunTimer;
 

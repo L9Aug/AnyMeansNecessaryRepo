@@ -73,7 +73,8 @@ public class CameraController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        CameraModeStates.SMUpdate();
+        // moved to pause menu.
+        //CameraModeStates.SMUpdate();
 	}
 
     void TestForCamModeChange()

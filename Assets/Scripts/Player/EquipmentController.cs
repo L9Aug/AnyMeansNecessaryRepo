@@ -110,12 +110,14 @@ public class EquipmentController : MonoBehaviour
                     currentEquipment = 0;
                     PlayerGun = EquipmentOptions[currentEquipment];
                     PlayerController.PC.CurrentWeapon = PlayerGun.GetComponent<BaseGun>();
+                    PlayerController.PC.CurrentWeapon.CallUpdateWeapon();
                     PlayerGun.SetActive(true);
                 }
             }
             else
             {
                 currentEquipment = EquipmentOptions.IndexOf(PlayerGun);
+                PlayerController.PC.CurrentWeapon.CallUpdateWeapon();
                 PlayerGun.SetActive(true);
             }
         }

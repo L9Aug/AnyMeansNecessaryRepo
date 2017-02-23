@@ -39,7 +39,6 @@ public class PauseMenu : MonoBehaviour
     
     // Use this for initialization
     void Start ()
-
     {
         disableButtons();
         SetupSateMachine();
@@ -50,43 +49,6 @@ public class PauseMenu : MonoBehaviour
 	void Update ()
     {
         PauseStateMachine.SMUpdate();
-
-        /*
-        if (Input.GetButtonDown("Pause"))
-        {
-            if (Time.timeScale < 0.1f)
-            {
-                resume();
-            }
-            else
-            {
-                enableButtons();
-                Time.timeScale = 0.0f;
-            }
-        }
-
-        if(Input.GetButtonDown("Inventory"))
-        {
-            inventoryUp();
-            Time.timeScale = 0.0f;
-        }
-
-        if(Input.GetButtonDown("Map"))
-        {
-            mapUp();
-            Time.timeScale = 0.0f;
-        }
-
-        if(Input.GetButtonDown("Skills"))
-        {
-            SkillsUp();
-            Time.timeScale = 0.0f;
-        }
-
-        if(Input.GetButtonDown("Interact"))
-        {
-            Shop();            
-        }*/
     }
 
     public void DisableUI()
@@ -203,7 +165,6 @@ public class PauseMenu : MonoBehaviour
         //#endif
     }
 
-
     public void reloadCheckpoint()//reloads to checkpoint
     {
         ReloadAI();
@@ -312,6 +273,12 @@ public class PauseMenu : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.BackQuote))
         {
             SetTransitionTarget(true, PausedMachine.Console);
+        }
+
+        if(PlayerController.PC != null)
+        {
+            PlayerController.PC.PSM.SMUpdate();
+            PlayerController.PC.GetComponent<CameraController>().CameraModeStates.SMUpdate();
         }
     }
 

@@ -3,18 +3,18 @@
   <enemList>
     <EnemDataToSave>
       <enemPos>
-        <x>28.6492767</x>
-        <y>-0.9186554</y>
-        <z>-20.7386932</z>
+        <x>28.99144</x>
+        <y>-1.25769043</y>
+        <z>2.08560944</z>
       </enemPos>
       <enemyRot>
         <x>0</x>
-        <y>0.007835587</y>
+        <y>0.008801998</y>
         <z>0</z>
-        <w>0.9999693</w>
+        <w>0.9999613</w>
         <eulerAngles>
           <x>0</x>
-          <y>0.8979013</y>
+          <y>1.00864756</y>
           <z>0</z>
         </eulerAngles>
       </enemyRot>
@@ -25,18 +25,18 @@
     </EnemDataToSave>
     <EnemDataToSave>
       <enemPos>
-        <x>86.70525</x>
+        <x>110.151138</x>
         <y>-0.9492645</y>
-        <z>-67.19754</z>
+        <z>-67.0772552</z>
       </enemPos>
       <enemyRot>
         <x>0</x>
-        <y>0.704425156</y>
+        <y>0.70292</y>
         <z>0</z>
-        <w>0.709778368</w>
+        <w>0.711269</w>
         <eulerAngles>
           <x>0</x>
-          <y>89.56624</y>
+          <y>89.323494</y>
           <z>0</z>
         </eulerAngles>
       </enemyRot>
@@ -48,7 +48,7 @@
     <EnemDataToSave>
       <enemPos>
         <x>50.51033</x>
-        <y>2.62857056</y>
+        <y>2.31777954</y>
         <z>-80.46515</z>
       </enemPos>
       <enemyRot>
@@ -91,18 +91,18 @@
     </EnemDataToSave>
     <EnemDataToSave>
       <enemPos>
-        <x>33.98648</x>
-        <y>2.570053</y>
-        <z>25.7574463</z>
+        <x>34.88011</x>
+        <y>1.94850159</y>
+        <z>25.413681</z>
       </enemPos>
       <enemyRot>
         <x>0</x>
-        <y>-0.9505853</y>
+        <y>-0.861583352</y>
         <z>0</z>
-        <w>-0.310463578</w>
+        <w>0.507616162</w>
         <eulerAngles>
           <x>0</x>
-          <y>143.825653</y>
+          <y>241.010345</y>
           <z>0</z>
         </eulerAngles>
       </enemyRot>
@@ -136,7 +136,7 @@
     <EnemDataToSave>
       <enemPos>
         <x>124.170349</x>
-        <y>4.04837036</y>
+        <y>3.589264</y>
         <z>-21.6951447</z>
       </enemPos>
       <enemyRot>
@@ -157,18 +157,18 @@
     </EnemDataToSave>
     <EnemDataToSave>
       <enemPos>
-        <x>109.308777</x>
-        <y>-0.883911133</y>
-        <z>-30.78527</z>
+        <x>112.710358</x>
+        <y>-1.02659607</y>
+        <z>-30.54515</z>
       </enemPos>
       <enemyRot>
         <x>0</x>
-        <y>-0.7373182</y>
+        <y>-0.7071068</y>
         <z>0</z>
-        <w>0.6755457</w>
+        <w>0.7071068</w>
         <eulerAngles>
           <x>0</x>
-          <y>264.993073</y>
+          <y>270</y>
           <z>0</z>
         </eulerAngles>
       </enemyRot>
@@ -179,8 +179,8 @@
     </EnemDataToSave>
     <EnemDataToSave>
       <enemPos>
-        <x>120.250046</x>
-        <y>3.21502686</y>
+        <x>120.250031</x>
+        <y>2.81478882</y>
         <z>-53.65</z>
       </enemPos>
       <enemyRot>
@@ -202,7 +202,7 @@
     <EnemDataToSave>
       <enemPos>
         <x>72.89035</x>
-        <y>12.6077118</y>
+        <y>8.102951</y>
         <z>-86.5551453</z>
       </enemPos>
       <enemyRot>
@@ -224,7 +224,7 @@
     <EnemDataToSave>
       <enemPos>
         <x>85.48035</x>
-        <y>-0.9492645</y>
+        <y>-0.949249268</y>
         <z>-1.49514771</z>
       </enemPos>
       <enemyRot>
@@ -245,18 +245,18 @@
     </EnemDataToSave>
     <EnemDataToSave>
       <enemPos>
-        <x>74.13014</x>
-        <y>-0.8529053</y>
-        <z>-75.28895</z>
+        <x>71.57001</x>
+        <y>-1.1746521</y>
+        <z>-75.2299957</z>
       </enemPos>
       <enemyRot>
         <x>0</x>
-        <y>0.7052511</y>
+        <y>-0.7071068</y>
         <z>0</z>
-        <w>0.7089577</w>
+        <w>0.7071068</w>
         <eulerAngles>
           <x>0</x>
-          <y>89.69966</y>
+          <y>270</y>
           <z>0</z>
         </eulerAngles>
       </enemyRot>
@@ -268,7 +268,7 @@
     <EnemDataToSave>
       <enemPos>
         <x>115.800354</x>
-        <y>-0.9492645</y>
+        <y>-0.949249268</y>
         <z>-83.71515</z>
       </enemPos>
       <enemyRot>
@@ -311,18 +311,18 @@
     </EnemDataToSave>
     <EnemDataToSave>
       <enemPos>
-        <x>59.67955</x>
-        <y>-0.784973145</y>
-        <z>-102.420807</z>
+        <x>39.6212</x>
+        <y>-1.11457825</y>
+        <z>-99.2820358</z>
       </enemPos>
       <enemyRot>
         <x>0</x>
-        <y>-0.644691467</y>
+        <y>-0.6529743</y>
         <z>0</z>
-        <w>0.7644429</w>
+        <w>0.757380068</w>
         <eulerAngles>
           <x>0</x>
-          <y>279.7149</y>
+          <y>278.467529</y>
           <z>0</z>
         </eulerAngles>
       </enemyRot>
@@ -334,7 +334,7 @@
     <EnemDataToSave>
       <enemPos>
         <x>63.1303558</x>
-        <y>-0.913116455</y>
+        <y>-1.3526001</y>
         <z>10.574852</z>
       </enemPos>
       <enemyRot>
@@ -377,18 +377,18 @@
     </EnemDataToSave>
     <EnemDataToSave>
       <enemPos>
-        <x>50.8450928</x>
-        <y>-0.925109863</y>
-        <z>-0.160263062</z>
+        <x>45.55452</x>
+        <y>-0.949249268</y>
+        <z>-8.487404</z>
       </enemPos>
       <enemyRot>
         <x>0</x>
-        <y>-0.9174922</y>
+        <y>-0.195268184</y>
         <z>0</z>
-        <w>0.397753835</w>
+        <w>-0.9807499</w>
         <eulerAngles>
           <x>0</x>
-          <y>226.875656</y>
+          <y>22.5207825</y>
           <z>0</z>
         </eulerAngles>
       </enemyRot>
@@ -399,18 +399,18 @@
     </EnemDataToSave>
     <EnemDataToSave>
       <enemPos>
-        <x>52.3086243</x>
+        <x>50.18547</x>
         <y>-0.9492645</y>
-        <z>-60.2686157</z>
+        <z>-49.28302</z>
       </enemPos>
       <enemyRot>
         <x>0</x>
-        <y>-0.9955627</y>
+        <y>-0.994337559</y>
         <z>0</z>
-        <w>0.0941010043</w>
+        <w>0.106268428</w>
         <eulerAngles>
           <x>0</x>
-          <y>190.799149</y>
+          <y>192.2005</y>
           <z>0</z>
         </eulerAngles>
       </enemyRot>
@@ -422,7 +422,7 @@
     <EnemDataToSave>
       <enemPos>
         <x>18.5148773</x>
-        <y>-0.951629639</y>
+        <y>-1.24984741</y>
         <z>34.17337</z>
       </enemPos>
       <enemyRot>
@@ -443,18 +443,18 @@
     </EnemDataToSave>
     <EnemDataToSave>
       <enemPos>
-        <x>114.096344</x>
-        <y>-0.865692139</y>
-        <z>-33.0963</z>
+        <x>125.066132</x>
+        <y>-1.32720947</y>
+        <z>-33.1917419</z>
       </enemPos>
       <enemyRot>
         <x>0</x>
-        <y>0.7093645</y>
+        <y>0.7636304</y>
         <z>0</z>
-        <w>0.704841852</w>
+        <w>0.645653665</w>
         <eulerAngles>
           <x>0</x>
-          <y>90.36646</y>
+          <y>99.5705948</y>
           <z>0</z>
         </eulerAngles>
       </enemyRot>
@@ -465,8 +465,8 @@
     </EnemDataToSave>
     <EnemDataToSave>
       <enemPos>
-        <x>102.570007</x>
-        <y>2.6522522</y>
+        <x>102.570023</x>
+        <y>2.573761</y>
         <z>-36.628</z>
       </enemPos>
       <enemyRot>
@@ -507,46 +507,24 @@
       <enemyState>Patrol</enemyState>
       <detected>false</detected>
     </EnemDataToSave>
-    <EnemDataToSave>
-      <enemPos>
-        <x>-10.5096588</x>
-        <y>-0.951629639</y>
-        <z>-2.38515472</z>
-      </enemPos>
-      <enemyRot>
-        <x>0</x>
-        <y>-0.7071068</y>
-        <z>0</z>
-        <w>0.7071068</w>
-        <eulerAngles>
-          <x>0</x>
-          <y>270</y>
-          <z>0</z>
-        </eulerAngles>
-      </enemyRot>
-      <enemHealth>100</enemHealth>
-      <detectionTimer>0</detectionTimer>
-      <enemyState>Patrol</enemyState>
-      <detected>false</detected>
-    </EnemDataToSave>
   </enemList>
   <PlayerHealth>100</PlayerHealth>
   <PlayerXP>0</PlayerXP>
   <PlayerLevel>0</PlayerLevel>
   <ammoCount>0</ammoCount>
   <PlayerPos>
-    <x>121.637886</x>
+    <x>120.978638</x>
     <y>-0.952590942</y>
-    <z>-118.322525</z>
+    <z>-118.296768</z>
   </PlayerPos>
   <PlayerRot>
     <x>0</x>
-    <y>-0.00174532842</y>
+    <y>0.146083042</y>
     <z>0</z>
-    <w>0.9999985</w>
+    <w>0.989272356</w>
     <eulerAngles>
       <x>0</x>
-      <y>359.8</y>
+      <y>16.8000011</y>
       <z>0</z>
     </eulerAngles>
   </PlayerRot>

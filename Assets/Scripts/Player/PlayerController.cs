@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerController : MonoBehaviour {
-
+public class PlayerController : MonoBehaviour
+{
     /// <summary>
     /// Player Controller
     /// </summary>
@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour {
 
     public bool bleedDamage;
     public bool Stalker;
+    public bool SnapNeck = false;
+    public bool GrabSpeed = false;
     public float MagazineSizeMultiplyer = 1;
     public float DamageMultiplyer = 1;
 
@@ -46,13 +48,13 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        PC = this;
         AnimTest();
         PlayerCam = Camera.main;
         pauseMenu = FindObjectOfType<PauseMenu>();
         PMC = GetComponent<PlayerMovementController>();
         equipmentController = GetComponent<EquipmentController>();
         cameraController = GetComponent<CameraController>();
-        PC = this;
         equipmentController.UpdateEquipment();
         SetupStateMachine();
 	}
@@ -60,7 +62,8 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        PSM.SMUpdate();
+        // moved to Pause Menu so that the player has not option of control when the game is paused.
+        //PSM.SMUpdate();
 	}
 
     public void SetInfiniteAmmo(bool doWe)
@@ -82,7 +85,7 @@ public class PlayerController : MonoBehaviour {
         {
             anim = GetComponent<Animator>();
         }
-        return (anim != null) ? true : false;
+        return (anim != null);
     }
 
     public void HealthCheck(float Health, float HealthChanged, float armour)
@@ -166,8 +169,8 @@ public class PlayerController : MonoBehaviour {
     void InteractionChecks()
     {
         GameObject interactionTarget = CheckTakedownFOV();
-        TakedownCheck(interactionTarget);
         LootingCheck(interactionTarget);
+        TakedownCheck(interactionTarget);
     }
 
     void LootingCheck(GameObject LootingTarget)
@@ -178,15 +181,14 @@ public class PlayerController : MonoBehaviour {
             {
                 if(LootingTarget.GetComponent<Base_Enemy>()._state == Base_Enemy.State.Dead)
                 {
-                    if (Input.GetButtonDown("Interact"))
+                    // can loot message
+                    if (Input.GetButtonDown("Interact") && PMC.PMSM.CurrentState.Name != "Takedown")
                     {
                         PerformLooting(LootingTarget);
-                    }
-                    
+                    }                    
                 }
             }
         }
-
     }
 
     void TakedownCheck(GameObject TakedownTarget)
@@ -197,7 +199,8 @@ public class PlayerController : MonoBehaviour {
             {
                 if(TakedownTarget.GetComponent<Base_Enemy>()._state != Base_Enemy.State.Dead)
                 {
-                    if(Input.GetButtonDown("Interact"))
+                    // can takedown message.
+                    if(Input.GetButtonDown("Interact") && PMC.PMSM.CurrentState.Name != "Looting")
                     {
                         PerformTakedown(TakedownTarget);
                     }
@@ -229,23 +232,26 @@ public class PlayerController : MonoBehaviour {
             float Takedown = Random.Range(0, 2); // select at random the takedown to use
             Animator TargetAnim = Target.GetComponent<Animator>(); // get the animator of the AI
 
-            Target.GetComponent<Base_Enemy>().setState(Base_Enemy.State.Dead); // turn off the AI
+            Target.GetComponent<Base_Enemy>().setState(SnapNeck ? Base_Enemy.State.Dead : Base_Enemy.State.Stunned); // turn off the AI
 
-            Target.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            Target.GetComponent<NavMeshAgent>().speed = 0;            
-
-            TargetAnim.applyRootMotion = false;
-            //Anim.applyRootMotion = true;
-
-            TargetAnim.SetTrigger("Takedown"); // trigger the animations for both the AI and the Player.
-            if (AnimTest())
+            if (!GrabSpeed)
             {
-                anim.SetTrigger("Takedown");
-            }
+                Target.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                Target.GetComponent<NavMeshAgent>().speed = 0;
 
-            //Put the player into the takedown state
-            PMC.TakedownTarget = Target.transform;
-            PMC.BeginTakedown = true;
+                TargetAnim.applyRootMotion = false;
+                //Anim.applyRootMotion = true;
+
+                TargetAnim.SetTrigger("Takedown"); // trigger the animations for both the AI and the Player.
+                if (AnimTest())
+                {
+                    anim.SetTrigger("Takedown");
+                }
+
+                //Put the player into the takedown state
+                PMC.TakedownTarget = Target.transform;
+                PMC.BeginTakedown = true;
+            }
         }
     }
 

@@ -8,6 +8,7 @@ public class PlayerMovementController : MonoBehaviour {
     /// Player Movement State Machine
     /// </summary>
     public SM.StateMachine PMSM;
+
     public bool BeginTakedown = false;
     public bool BeginLooting = false;
     public FirstPersonMovement m_FPM;
@@ -70,6 +71,10 @@ public class PlayerMovementController : MonoBehaviour {
 
     void EndTakedownState()
     {
+        if(TakedownTarget != null)
+        {
+            TakedownTarget.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+        }
         uiElements.xpGain(25);
     }
 
@@ -90,6 +95,7 @@ public class PlayerMovementController : MonoBehaviour {
 
     void EndTakedownTransitionFunc()
     {
+        
         BeginTakedown = false;
         TakedownTarget = null;
     }
@@ -103,6 +109,13 @@ public class PlayerMovementController : MonoBehaviour {
     void LootingUpdateFunc()
     {
         LootTimer += Time.deltaTime;
+        if(LootTarget != null)
+        {
+            TargetPosition = LootTarget.transform.position + (Quaternion.FromToRotation(Vector3.forward, LootTarget.transform.forward) * new Vector3(-0.14f, 0, -1.183f));
+            TargetRotation = LootTarget.transform.rotation;
+
+            UpdatePlayerTransform();
+        }
     }
 
     void EndLootingFunc()
@@ -113,43 +126,47 @@ public class PlayerMovementController : MonoBehaviour {
             if(tempLootObj != null)
             {
                 List<LootableItem> loot = tempLootObj.GetLoot();
-
-                foreach(LootableItem item in loot)
+                ConsoleController.CC.PrintToConsole("<b>Loot Obtained:</b>");
+                foreach (LootableItem item in loot)
                 {
                     switch (item.name) 
                     {
                         case "Money":
-                            ConsoleController.CC.PrintToConsole("Add Money: " + item.Quantity);
                             ShopButtons.money += item.Quantity;
+                            ConsoleController.CC.PrintToConsole("Added Money: " + item.Quantity);
                             break;
 
                         case "Distractions":
                             List<Items> tempItems = ItemDataBase.InventoryDataBase.itemList.FindAll(x => x.itemType == Items.TypeofItem.EquipAndConsume);
                             tempItems[Random.Range(0, tempItems.Count)].itemValue += item.Quantity;
-                            ConsoleController.CC.PrintToConsole("Add Distractions: " + item.Quantity);
+                            ConsoleController.CC.PrintToConsole("Added Distractions: " + item.Quantity);
                             break;
 
                         case "Armour":
                             GetComponent<HealthComp>().AddArmour(item.Quantity);
-                            ConsoleController.CC.PrintToConsole("Add Armour: " + item.Quantity);
+                            ConsoleController.CC.PrintToConsole("Added Armour: " + item.Quantity);
                             break;
 
                         case "Pistol Ammunition":
                             //might need fixing
-                            GetComponent<EquipmentController>().Ammo.Find(x => x.itemName.Contains("Pistol")).itemValue += item.Quantity;
-                            ConsoleController.CC.PrintToConsole("Add Pistol Ammunition: " + item.Quantity);
+                            Items temp = ItemDataBase.InventoryDataBase.itemList.Find(x => x.itemName.Contains("Pistol") && x.itemType == Items.TypeofItem.misc);
+                            temp.currentStack = Mathf.Clamp(temp.currentStack + item.Quantity, 0, temp.maxItemStack);
+                            
+                            ConsoleController.CC.PrintToConsole("Added Pistol Ammunition: " + item.Quantity);
                             break;
 
                         case "Assualt Rifle Ammunition":
                             // might need fixing
-                            GetComponent<EquipmentController>().Ammo.Find(x => x.itemName.Contains("Assualt")).itemValue += item.Quantity;
-                            ConsoleController.CC.PrintToConsole("Add Assualt Rifle Ammunition: " + item.Quantity);
+                            Items temp2 = ItemDataBase.InventoryDataBase.itemList.Find(x => x.itemName.Contains("Assualt") && x.itemType == Items.TypeofItem.misc);
+                            temp2.currentStack = Mathf.Clamp(temp2.currentStack + item.Quantity, 0, temp2.maxItemStack);
+                            ConsoleController.CC.PrintToConsole("Added Assualt Rifle Ammunition: " + item.Quantity);
                             break;
 
                         case "Sniper Rifle Ammunition":
                             // might need fixing
-                            GetComponent<EquipmentController>().Ammo.Find(x => x.itemName.Contains("Sniper")).itemValue += item.Quantity;
-                            ConsoleController.CC.PrintToConsole("Add Sniper Rifle Ammunition: " + item.Quantity);
+                            Items temp3 = ItemDataBase.InventoryDataBase.itemList.Find(x => x.itemName.Contains("Sniper") && x.itemType == Items.TypeofItem.misc);
+                            temp3.currentStack = Mathf.Clamp(temp3.currentStack + item.Quantity, 0, temp3.maxItemStack);
+                            ConsoleController.CC.PrintToConsole("Added Sniper Rifle Ammunition: " + item.Quantity);
                             break;
 
                         default:
@@ -157,8 +174,8 @@ public class PlayerMovementController : MonoBehaviour {
                             break;
                     }
                 }
+                PlayerController.PC.GetComponent<EquipmentController>().UpdateEquipment();
                 tempLootObj.HasBeenLooted = true;
-
             }
         }
     }
@@ -223,7 +240,7 @@ public class PlayerMovementController : MonoBehaviour {
             new List<SM.Action>() { EndTakedownState });
 
         SM.State FirstPersonState = new SM.State("Movement",
-            new List<SM.Transition>() { BeginTakedown, BeginLooting },
+            new List<SM.Transition>() { BeginLooting, BeginTakedown },
             new List<SM.Action>() { BeginFirstPersonState },
             null,
             new List<SM.Action>() { EndFirstPersonState });
