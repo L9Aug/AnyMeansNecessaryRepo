@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -264,6 +265,11 @@ public class PlayerController : MonoBehaviour {
                 if(angle < (TakedownFOV / 2f))
                 {
                     AIInFoV.Add(AIInRange[i]);
+                    UIElements.ContextText.GetComponent<Text>().text = "Press 'F' to Take Down";
+                }
+                else
+                {
+                    UIElements.ContextText.GetComponent<Text>().text = " ";
                 }
             }
 
