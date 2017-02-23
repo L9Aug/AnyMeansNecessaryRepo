@@ -17,6 +17,13 @@ public class HealthComp : MonoBehaviour {
         health = MaxHealth;
 	}
 
+    public void ChangeHealth(float Amount)
+    {
+        health += Amount;
+        health = Mathf.Clamp(health, 0, MaxHealth);
+        CallhealthChanged(Amount);
+    }
+
     public float GetHealth()
     {
         return health;

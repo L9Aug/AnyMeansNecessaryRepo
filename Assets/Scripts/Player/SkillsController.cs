@@ -368,6 +368,17 @@ public class SkillsController : MonoBehaviour
 
     }
 
+    public void AddAllSkills()
+    {
+        for(int i = 0; i < 30; ++i)
+        {
+            if (!CurrentSkills.Contains((Skills)i))
+            {
+                AddNewSkill((Skills)i);
+            }
+        }
+    }
+
 }
 
 #if UNITY_EDITOR

@@ -119,34 +119,37 @@ public class PlayerMovementController : MonoBehaviour {
                     switch (item.name) 
                     {
                         case "Money":
-                            print("Add Money: " + item.Quantity);
-                            // Add money here.
+                            ConsoleController.CC.PrintToConsole("Add Money: " + item.Quantity);
+                            ShopButtons.money += item.Quantity;
                             break;
 
                         case "Distractions":
                             List<Items> tempItems = ItemDataBase.InventoryDataBase.itemList.FindAll(x => x.itemType == Items.TypeofItem.EquipAndConsume);
                             tempItems[Random.Range(0, tempItems.Count)].itemValue += item.Quantity;
-                            print("Add Distractions: " + item.Quantity);
+                            ConsoleController.CC.PrintToConsole("Add Distractions: " + item.Quantity);
                             break;
 
                         case "Armour":
                             GetComponent<HealthComp>().AddArmour(item.Quantity);
-                            print("Add Armour: " + item.Quantity);
+                            ConsoleController.CC.PrintToConsole("Add Armour: " + item.Quantity);
                             break;
 
                         case "Pistol Ammunition":
+                            //might need fixing
                             GetComponent<EquipmentController>().Ammo.Find(x => x.itemName.Contains("Pistol")).itemValue += item.Quantity;
-                            print("Add Pistol Ammunition: " + item.Quantity);
+                            ConsoleController.CC.PrintToConsole("Add Pistol Ammunition: " + item.Quantity);
                             break;
 
                         case "Assualt Rifle Ammunition":
+                            // might need fixing
                             GetComponent<EquipmentController>().Ammo.Find(x => x.itemName.Contains("Assualt")).itemValue += item.Quantity;
-                            print("Add Assualt Rifle Ammunition: " + item.Quantity);
+                            ConsoleController.CC.PrintToConsole("Add Assualt Rifle Ammunition: " + item.Quantity);
                             break;
 
                         case "Sniper Rifle Ammunition":
+                            // might need fixing
                             GetComponent<EquipmentController>().Ammo.Find(x => x.itemName.Contains("Sniper")).itemValue += item.Quantity;
-                            print("Add Sniper Rifle Ammunition: " + item.Quantity);
+                            ConsoleController.CC.PrintToConsole("Add Sniper Rifle Ammunition: " + item.Quantity);
                             break;
 
                         default:

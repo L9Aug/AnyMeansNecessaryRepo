@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour {
     public BaseGun CurrentWeapon;
     public bool isADS;
 
+    public bool Undying = false;
+    public bool InfiniteAmmo = false;
+
     public bool bleedDamage;
     public bool Stalker;
     public float MagazineSizeMultiplyer = 1;
@@ -60,6 +63,19 @@ public class PlayerController : MonoBehaviour {
         PSM.SMUpdate();
 	}
 
+    public void SetInfiniteAmmo(bool doWe)
+    {
+        equipmentController.InfiniteAmmo = doWe;
+        foreach(GameObject go in equipmentController.EquipmentOptions)
+        {
+            BaseGun gun = go.GetComponent<BaseGun>();
+            if(gun != null)
+            {
+                gun.InfiniteAmmo = doWe;
+            }
+        }
+    }
+
     bool AnimTest()
     {
         if(anim == null)
@@ -71,7 +87,7 @@ public class PlayerController : MonoBehaviour {
 
     public void HealthCheck(float Health, float HealthChanged, float armour)
     {
-        if(Health <= 0)
+        if(Health <= 0 && !Undying)
         {
             Dying = true;
         }
