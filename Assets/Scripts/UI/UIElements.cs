@@ -30,7 +30,7 @@ public class UIElements : MonoBehaviour {
     void Start () {
         ammoCount.text = ammo.ToString() + "/30";
         requiredXpForLevel = 25 * (Mathf.Pow(level, 2) + level + 2);
-        print(requiredXpForLevel);
+        //print(requiredXpForLevel);
     }
 	
 	// Update is called once per frame

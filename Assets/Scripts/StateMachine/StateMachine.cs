@@ -17,6 +17,7 @@ namespace SM
         public State CurrentState;
 
         private Transition triggeredTransition;
+        private Transition ForcedTransition;
 
         /// <summary>
         /// Constructor for StateMachine
@@ -48,19 +49,33 @@ namespace SM
             }
         }
 
+        public void ForceTransition(Transition trans)
+        {
+            ForcedTransition = trans;
+            SMUpdate();
+        }
+
         public void SMUpdate()
         {
             triggeredTransition = null;
             List<Action> ReturnList = new List<Action>();
 
-            // Go through each possible transition until one if found to be triggered.
-            foreach (Transition transition in CurrentState.Transitions)
+            if (ForcedTransition == null)
             {
-                if (transition.IsTriggered)
+                // Go through each possible transition until one if found to be triggered.
+                foreach (Transition transition in CurrentState.Transitions)
                 {
-                    triggeredTransition = transition;
-                    break;
+                    if (transition.IsTriggered)
+                    {
+                        triggeredTransition = transition;
+                        break;
+                    }
                 }
+            }
+            else
+            {
+                triggeredTransition = ForcedTransition;
+                ForcedTransition = null;
             }
 
             // If a transition has been triggered queue up the necessary actions.

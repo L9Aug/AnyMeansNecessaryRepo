@@ -11,7 +11,7 @@ public class ConsoleController : MonoBehaviour
     public static ConsoleController CC;
 
     StateMachine ConsoleSM;
-    bool isConsoleActive = false;
+    public bool isConsoleActive = false;
 
     public enum LogType { Standard, Command, Error }
 
@@ -39,14 +39,6 @@ public class ConsoleController : MonoBehaviour
     void Update()
     {
         ConsoleSM.SMUpdate();       
-    }
-
-    void GetTildInput()
-    {
-        if (Input.GetKeyDown(KeyCode.BackQuote))
-        {
-            isConsoleActive = !isConsoleActive;
-        }
     }
 
     void GetActiveConsoleInput()
@@ -191,13 +183,13 @@ public class ConsoleController : MonoBehaviour
         State Active = new State("Active",
             new List<Transition>() { DeactivateConsoleTransFunc },
             null,
-            new List<Action>() { GetActiveConsoleInput, GetTildInput },
+            new List<Action>() { GetActiveConsoleInput },
             null);
 
         State InActive = new State("In-Active",
             new List<Transition>() { ActivateConsoleTransFunc },
             null,
-            new List<Action>() { GetTildInput },
+            null,
             null);
 
         // Set target States for transitions
