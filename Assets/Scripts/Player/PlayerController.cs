@@ -265,7 +265,10 @@ public class PlayerController : MonoBehaviour {
                 if(angle < (TakedownFOV / 2f))
                 {
                     AIInFoV.Add(AIInRange[i]);
-                    UIElements.ContextText.GetComponent<Text>().text = "Press 'F' to Take Down";
+                    if (AIInRange[i].GetComponent<Base_Enemy>()._state != Base_Enemy.State.Dead)
+                    {
+                        UIElements.ContextText.GetComponent<Text>().text = "Press 'F' to Take Down";
+                    }
                 }
                 else
                 {
