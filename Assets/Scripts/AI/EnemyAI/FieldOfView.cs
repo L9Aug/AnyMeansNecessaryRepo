@@ -82,12 +82,13 @@ public class FieldOfView : MonoBehaviour
                             {
                                 distToPlayer = transform.position - Player.transform.position;
                                 if (distToPlayer.magnitude < shootRange)
-                            {
-                                if (CurrentWeapon.Fire(targetsInViewRadius[i].transform.position + new Vector3(0, 1.4f, 0), 1 << 8, 1, true, true))
                                 {
-                                    Anim.SetTrigger("Fire");
+                                    if (CurrentWeapon.Fire(targetsInViewRadius[i].transform.position + new Vector3(0, 1.4f, 0), 1 << 8, 1, true, true))
+                                    {
+                                    Debug.Log("fired");
+                                        Anim.SetTrigger("Fire");
+                                    }
                                 }
-                            }
 
                             if (gameObject.tag == "StandardEnemy")
                                 {
@@ -117,8 +118,8 @@ public class FieldOfView : MonoBehaviour
                 }
            // }
         }
-        if (detectedtimer > 0)
-            detectedtimer -= Time.deltaTime;
+        if (detectedtimer > 0  && !this.GetComponent<Cover>().movingToCover)
+            detectedtimer -= (Time.deltaTime/4);
         return false; // returns boolean for ai.main checklost function.
     }
 

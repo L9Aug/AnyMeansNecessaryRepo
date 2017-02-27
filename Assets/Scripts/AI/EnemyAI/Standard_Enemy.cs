@@ -38,8 +38,6 @@ public class Standard_Enemy : Base_Enemy {
                 GetComponent<Enemy_Was_Shot>().WasShot();
                 break;
 
-
-
             case State.Alerted:
                 GetComponent<BodyDetection>().FindBodies();
                 GetComponent<Enemy_Chase>().checkLost(GetComponent<FieldOfView>().FindVisibleTargets()); // constantly searches if player is within detection radius

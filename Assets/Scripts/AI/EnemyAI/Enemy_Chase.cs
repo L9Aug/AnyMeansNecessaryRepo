@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Enemy_Chase : MonoBehaviour {
 
-    private float lostTimer;
+    public float lostTimer;
     private GameObject Player;
     NavMeshAgent Agent;
 
@@ -14,17 +14,20 @@ public class Enemy_Chase : MonoBehaviour {
 	
     public void Chase()
     {
-        Agent.speed = 1;
-        gameObject.transform.LookAt(Player.transform); //rotate and face player 
-        Vector3 distToPlayer = transform.position - Player.transform.position;
-        if (distToPlayer.magnitude < 5) // stops ai running straight into the players face.
-        {
-            Agent.speed = 0;
-        }
-        else
+        if (!this.GetComponent<Cover>().movingToCover)
         {
             Agent.speed = 1;
-            Agent.SetDestination(Player.transform.position); // pathfind to player with slight offset otherwise constantly pushes player
+            gameObject.transform.LookAt(Player.transform); //rotate and face player 
+            Vector3 distToPlayer = transform.position - Player.transform.position;
+            if (distToPlayer.magnitude < 10) // stops ai running straight into the players face.
+            {
+                Agent.speed = 0;
+            }
+            else
+            {
+                Agent.speed = 1;
+                Agent.SetDestination(Player.transform.position); // pathfind to player with slight offset otherwise constantly pushes player
+            }
         }
     }
 
@@ -57,16 +60,16 @@ public class Enemy_Chase : MonoBehaviour {
 
     public void checkLost(bool found) // called from fieldofview script //basic lost function with a 3 second timer
     {
-        if (found && gameObject.tag != "Hunter")
+        if (found && gameObject.tag != "Hunter" || this.GetComponent<Base_Enemy>()._state == Base_Enemy.State.InCover || this.GetComponent<Cover>().movingToCover)
         {
             lostTimer = 0.0f;
             Enemy_Patrol.detected = true;
         }
-        else
+        else if (this.GetComponent<Base_Enemy>()._state != Base_Enemy.State.InCover || !this.GetComponent<Cover>().movingToCover)
         {
             lostTimer += Time.deltaTime;
         }
-        if (lostTimer >= 3)
+        if (lostTimer >= 6)
         {
             if (gameObject.tag == "StandardEnemy")
             {

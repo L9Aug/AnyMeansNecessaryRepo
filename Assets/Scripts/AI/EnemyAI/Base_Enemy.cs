@@ -12,8 +12,8 @@ public class Base_Enemy : MonoBehaviour
 	public State _state;
     public NavMeshAgent Agent;
     public static int killCount;
-
     public static float stunTimer;
+
     private bool Stunned;
     private float currentStunTimer;
 

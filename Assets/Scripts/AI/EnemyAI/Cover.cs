@@ -26,12 +26,14 @@ public class Cover : MonoBehaviour
     private Vector3 distToPlayer;
     private Vector3 distCoverToPlayer;
     public bool allowCover;
+    public bool movingToCover;
     private float hiddenTimer;
-    private float hideLenght = 5;
+    private float hideLenght = 6;
 
     NavMeshAgent Agent;
     void Start()
     {
+        movingToCover = false;
         Player = GameObject.Find("Player"); // for who you want the ai to chase
         Agent = GetComponent<NavMeshAgent>();
     }
@@ -47,9 +49,8 @@ public class Cover : MonoBehaviour
             {
                 for (int i = 0; i < targetsInViewRadius.Length; i++) // checks list of targets placed based on whats in the colliding sphare.
                 {
-
                     Vector3 dirToTarget = (targetsInViewRadius[i].transform.position - Player.transform.position).normalized;
-                    if (Vector3.Angle(Player.transform.forward, dirToTarget) < 180 / 2) // determines if cover is behind player
+                    if (Vector3.Angle(Player.transform.forward, dirToTarget) < 180 / 2 || this.GetComponent<Base_Enemy>()._state == Base_Enemy.State.InCover) // determines if cover is behind player
                     {
                         //determining closest cover point to ai and to send ai there or to continue in chase state based on distance.
                         distToTarget = targetsInViewRadius[i].transform.position - transform.position;
@@ -68,10 +69,16 @@ public class Cover : MonoBehaviour
                             }
                             else if (hiddenTimer < hideLenght && allowCover)
                             {
+                                if (targetsInViewRadius[i].GetComponent<CrouchCover>().isCrouchCover)
+                                {
+                                    GetComponent<Animator>().SetTrigger("Crouch");
+                                }
                                 hiddenTimer += Time.deltaTime;
                             }
                             else if (hiddenTimer >= hideLenght && allowCover)
                             {
+                                Debug.Log("leaving cover");
+                                movingToCover = false;
                                 allowCover = false;
                                 hiddenTimer = 0;
                                 distToTarget = Vector3.zero;
@@ -84,16 +91,19 @@ public class Cover : MonoBehaviour
                             closestTarget = distToTarget;
                             currentTarget = targetsInViewRadius[i].transform.position;
                         }
-                        else if (distToPlayer.magnitude <= 15 && distToPlayer.magnitude >= 5 && distCoverToPlayer.magnitude >= 5) // if cover point is close enough to the player ai goes there. (stops ai who are coming from across the map from entering random cover points along the way which is pointless)
+                        else if (distToPlayer.magnitude <= 15 && distToPlayer.magnitude >= 4.5f && distCoverToPlayer.magnitude >= 3.5) // if cover point is close enough to the player ai goes there. (stops ai who are coming from across the map from entering random cover points along the way which is pointless)
                         {
-                            Debug.DrawLine(transform.position, targetsInViewRadius[i].transform.position);
+                            Debug.DrawLine(transform.position, targetsInViewRadius[i].transform.position, Color.black);
                             Agent.speed = 1;
+                            movingToCover = true;
                             Agent.SetDestination(currentTarget);
                         }
                         else
                         {
+                            Debug.DrawLine(transform.position, targetsInViewRadius[i].transform.position);
                             Debug.Log("not in range");
-                            //GetComponent<Standard_Enemy>().setState(Standard_Enemy.State.Chase); // if no close cover point then continues to chase until cover is next called.
+                            movingToCover = false;
+                            GetComponent<Standard_Enemy>().setState(Standard_Enemy.State.Chase); // if no close cover point then continues to chase until cover is next called.
                         }
                     }else
                     {
