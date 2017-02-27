@@ -7,10 +7,11 @@ using Condition;
 
 public class PauseMenu : MonoBehaviour
 {
+    public static PauseMenu MenuOfPause;
     #region State Machine Variables
 
-    enum PausedMachine { None, Shop, Dialog, Console, PausedMenu };
-    enum PausedMenuMachine { Menu, Skills, Inventory, Map, Options };
+    public enum PausedMachine { None, Shop, Dialog, Console, PausedMenu };
+    public enum PausedMenuMachine { Menu, Skills, Inventory, Map, Options };
 
     StateMachine PauseStateMachine;
     StateMachine PausedStateMachine;
@@ -32,14 +33,19 @@ public class PauseMenu : MonoBehaviour
     public GameObject SniperScopeUI;
     public GameObject ShopScreen;
 
+    public GameObject DialogScreen;
+
     public GameObject Player;
     public Camera MapCamera;
-    Vector3 StartPos;
+
+    public bool inDialogRange;
    
     
     // Use this for initialization
     void Start ()
+
     {
+        MenuOfPause = this;
         disableButtons();
         SetupSateMachine();
         MapCamera.cullingMask |= (1 << 0) | (1 << 8) | (1 << 9) | (1 << 11) | (1 << 12);
@@ -51,6 +57,7 @@ public class PauseMenu : MonoBehaviour
         PauseStateMachine.SMUpdate();
     }
 
+    #region Button Functions
     public void DisableUI()
     {
         PauseButtons.SetActive(false);
@@ -68,33 +75,15 @@ public class PauseMenu : MonoBehaviour
     {
         DisableUI();
         GamePlayHUD.gameObject.SetActive(true);
-        InventoryElements.GetComponent<RectTransform>().localPosition = new Vector3(-100, 2000, 0);
+        //InventoryElements.GetComponent<RectTransform>().localPosition = new Vector3(-100, 2000, 0);
         
-        
-//#if !UNITY_EDITOR
+        //#if !UNITY_EDITOR
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-//#endif
+        //#endif
     }
 
-   void enableButtons()//Function brings the pause menu up
-    {
-        DisableUI();
-        PauseButtons.gameObject.SetActive(true);
-        InventoryElements.GetComponent<RectTransform>().localPosition = new Vector3(-100,2000,0);
-       
-        //#if !UNITY_EDITOR
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-//#endif
-    }
-
-    void resume() //resumes game
-    {
-        disableButtons();
-        Time.timeScale = 1.0f;
-
-    }
+   
 
     void quit() //quits game
     {
@@ -102,67 +91,39 @@ public class PauseMenu : MonoBehaviour
         Debug.Log("Is Quitting");
     }
 
-    public void inventoryUp()
+    public void pauseMenu()
     {
-        DisableUI();
-        InventoryScreen.gameObject.SetActive(true);
-        InventoryElements.GetComponent<RectTransform>().localPosition = Vector3.zero;
-
-        //#if !UNITY_EDITOR
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        //#endif
-
+        SetTransitionTarget(true, PausedMachine.PausedMenu, PausedMenuMachine.Menu);
     }
 
-    public void mapUp()
+    public void inventoryMenu()
     {
-        //Displays Map section of the menu and deactivates other elements
-        DisableUI();
-        Map.gameObject.SetActive(true);
-        InventoryElements.GetComponent<RectTransform>().localPosition = new Vector3(-100, 2000, 0);
-        MapCamera.transform.position = new Vector3(Player.transform.position.x,50,Player.transform.position.z);
-        MapCamera.cullingMask |= (1 << 0)|(1<<8)|(1<<9)|(1<<11)|(1<<12);
+        SetTransitionTarget(true, PausedMachine.PausedMenu, PausedMenuMachine.Inventory);
+    }
 
-        //#if !UNITY_EDITOR
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        //#endif
-
+    public void mapMenu()
+    {
+        SetTransitionTarget(true, PausedMachine.PausedMenu, PausedMenuMachine.Map);
     }
 
     public void OptionsMenu()
     {
-        DisableUI();
-        OptionsScreen.gameObject.SetActive(true);
-        InventoryElements.GetComponent<RectTransform>().localPosition = new Vector3(-100, 2000, 0);
-
-        //#if !UNITY_EDITOR
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        //#endif
+        SetTransitionTarget(true, PausedMachine.PausedMenu, PausedMenuMachine.Options);
     }
 
-    public void SkillsUp()
+    public void SkillsMenu()
     {
-        DisableUI();
-        SkillTreeScreen.gameObject.SetActive(true);
-        //#if !UNITY_EDITOR
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        //#endif
+        SetTransitionTarget(true, PausedMachine.PausedMenu, PausedMenuMachine.Skills);
     }
 
     public void Shop()
     {
-        DisableUI();
-        ShopScreen.SetActive(true);
-        Time.timeScale = 0.0f;
+        SetTransitionTarget(true, PausedMachine.Shop);
+    }
 
-        //#if !UNITY_EDITOR
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        //#endif
+    public void Resume()
+    {
+        SetTransitionTarget(false);
     }
 
     public void reloadCheckpoint()//reloads to checkpoint
@@ -171,7 +132,7 @@ public class PauseMenu : MonoBehaviour
 
         ReloadPlayer();
 
-        resume();
+        SetTransitionTarget(false);
     }
 
     void ReloadAI()
@@ -213,11 +174,13 @@ public class PauseMenu : MonoBehaviour
         PlayerController.PC.transform.position = XMLManager.instance.enemyDB.PlayerPos;//moves player to checkpoint position
     }
 
+    #endregion
+
     #region State Machine Funcitons
 
     #region Transition Functions
 
-    void SetTransitionTarget(bool PausedState, PausedMachine PausedTarget = PausedMachine.None, PausedMenuMachine PausedMenuTarget = PausedMenuMachine.Menu)
+    public void SetTransitionTarget(bool PausedState = false, PausedMachine PausedTarget = PausedMachine.None, PausedMenuMachine PausedMenuTarget = PausedMenuMachine.Menu)
     {
         isGamePaused = PausedState;
         PausedGoto = PausedTarget;
@@ -275,10 +238,12 @@ public class PauseMenu : MonoBehaviour
             SetTransitionTarget(true, PausedMachine.Console);
         }
 
-        if(PlayerController.PC != null)
+        if(inDialogRange == true)
         {
-            PlayerController.PC.PSM.SMUpdate();
-            PlayerController.PC.GetComponent<CameraController>().CameraModeStates.SMUpdate();
+            if(Input.GetButtonDown("Interact"))
+            {
+                //SetTransitionTarget(true, PausedMachine.Dialog);
+            }
         }
     }
 
@@ -334,7 +299,7 @@ public class PauseMenu : MonoBehaviour
 
     void BeginDialog()
     {
-
+        DialogScreen.SetActive(true);
     }
 
     void DialogUpdate()
@@ -344,7 +309,7 @@ public class PauseMenu : MonoBehaviour
 
     void EndDialog()
     {
-
+        DialogScreen.SetActive(false);
     }
 
     void BeginConsole()

@@ -18,7 +18,7 @@ public class AIRemoveVisual : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-       if (AI.GetComponent<Base_Enemy>()._state == Base_Enemy.State.Dead)
+        if (AI.GetComponent<Base_Enemy>()._state == Base_Enemy.State.Dead)
         {
             Destroy(gameObject);
         }

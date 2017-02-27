@@ -61,7 +61,7 @@ public class Mission_Giver : MonoBehaviour {
 
     private void CallMission()
     {
-        if (Input.GetKeyDown("e") && talkingToNpc == false && missionAccepted == false)
+        if (Input.GetButtonDown("Interact") && talkingToNpc == false && missionAccepted == false)
         {
             Debug.Log(QuestDialog);
             talkingToNpc = true;
@@ -96,7 +96,7 @@ public class Mission_Giver : MonoBehaviour {
     }
     private void CompleteMissionDialog()
     {
-        if (Input.GetKeyDown("e") && talkingToNpc == false && missionCompletedDialog == false)
+        if (Input.GetButtonDown("Interact") && talkingToNpc == false && missionCompletedDialog == false)
         {
             Debug.Log(QuestCompleteDialog);
             talkingToNpc = true;

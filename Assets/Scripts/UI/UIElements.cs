@@ -18,7 +18,7 @@ public class UIElements : MonoBehaviour {
     public Slider xpBar;
     public Toggle mainObjective;
     public Text ammoCount;
-    public Text reload;
+    public static GameObject ContextText;
 
     public Texture rifle;
     public Texture tranqPistol;
@@ -30,6 +30,7 @@ public class UIElements : MonoBehaviour {
     void Start () {
         ammoCount.text = ammo.ToString() + "/30";
         requiredXpForLevel = 25 * (Mathf.Pow(level, 2) + level + 2);
+        ContextText = GameObject.Find("ContextText");
         //print(requiredXpForLevel);
     }
 	
@@ -103,11 +104,11 @@ public class UIElements : MonoBehaviour {
         ammoCount.text = Ammo + " / " + MaxAmmo;
         if(Ammo <= 0)
         {
-            reload.text = "Press 'R' to Reload!";
+            ContextText.GetComponent<Text>().text = "Press 'R' to Reload!";
         }
         else
         {
-            reload.text = "";
+            ContextText.GetComponent<Text>().text = "";
         }
     }
 
@@ -128,7 +129,7 @@ public class UIElements : MonoBehaviour {
 
         if(ammo == 0)
         {
-            reload.text = "Press R to Reload!";
+            ContextText.GetComponent<Text>().text = "Press R to Reload!";
         }
     }
 
